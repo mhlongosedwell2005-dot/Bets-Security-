@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>48 Number System AR Demo</title>
+  <script type="module" src="https://unpkg.com/@google/model-viewer@3.4.0/dist/model-viewer.min.js"></script>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{background:#000;font-family:system-ui,sans-serif;color:#fff;overflow:hidden}
+    model-viewer{width:100vw;height:100vh}
+    .panel{background:#000000f5;border:1px solid #00ffff;border-radius:14px;padding:14px;width:400px}
+    .title{color:#fff;text-align:center;font-weight:800;font-size:16px}
+    .subtitle{color:#00ffff;text-align:center;font-size:10px;margin:4px 0 10px 0;letter-spacing:1px}
+    .ball{width:32px;height:32px;border:2px solid #00ffff;border-radius:50%;display:flex;
+      align-items:center;justify-content:center;color:#00ffff;background:#1a1a1a88;
+      font-weight:700;margin:2px;font-size:12px}
+    .grid{display:grid;grid-template-columns:repeat(8,1fr);padding:6px 0}
+    .row{display:flex;justify-content:space-between;align-items:center;background:#111;
+      padding:6px 10px;margin:3px 0;border-radius:6px;font-size:12px}
+    .timer{background:#c40052;color:#fff;padding:4px 8px;border-radius:4px;font-weight:700;min-width:75px;text-align:center;font-size:11px}
+    .odds{display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid #222;font-size:12px}
+    .footer{color:#666;text-align:center;margin-top:8px;font-size:9px;border-top:1px solid #333;padding-top:6px}
+    .logo{height:20px;margin:0 4px;filter:brightness(1.3)}
+  </style>
+</head>
+<body>
+
+<model-viewer 
+  id="arView"
+  ar 
+  ar-modes="webxr scene-viewer quick-look" 
+  camera-controls 
+  touch-action="pan-y"
+  alt="48 Number System AR Dashboard"
+  poster="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==">
+
+  <button slot="ar-button" style="position:absolute;bottom:20px;left:50%;transform:translateX(-50%);
+    background:#00ffff;color:#000;border:none;padding:14px 24px;border-radius:8px;font-weight:800;font-size:16px">
+    VIEW IN AR
+  </button>
+
+  <div slot="hotspot-dashboard" data-position="0 1.6 -2" data-normal="0 0 1">
+    <div class="panel">
+      
+      <div class="title">UK 49S 6/49</div>
+      <div class="subtitle">48 NUMBER SYSTEM DEMO</div>
+      
+      <!-- 48 Ball Grid -->
+      <div class="grid" id="ballGrid"></div>
+      
+      <!-- Live Ticker -->
+      <div style="margin:8px 0;border-top:1px solid #00ffff;padding-top:8px" id="tickerList"></div>
+      
+      <!-- Odds Table -->
+      <div style="margin-top:8px;border-top:1px solid #00ffff;padding-top:8px">
+        <div class="odds"><span>1 Ball</span><span>6.60</span></div>
+        <div class="odds"><span>2 Balls</span><span>61.00</span></div>
+        <div class="odds"><span>3 Balls</span><span>610.00</span></div>
+        <div class="odds"><span>4 Balls</span><span>8501.00</span></div>
+        <div class="odds" style="border:none"><span>5 Balls</span><span>100001.00</span></div>
+      </div>
+      
+      <div style="color:#00ff88;text-align:center;margin-top:8px;font-weight:bold;font-size:13px">
+        48 Bets Selected | R16,512.00
+      </div>
+      
+      <!-- Partner Logos -->
+      <div style="display:flex;justify-content:center;align-items:center;margin-top:10px;border-top:1px solid #333;padding-top:8px">
+        <img src="https://upload.wikimedia.org/wikipedia/en/5/53/Arsenal_FC.svg" class="logo" alt="Arsenal">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/4/4a/South_Africa_national_rugby_union_team_logo.svg" class="logo" alt="Springboks">
+        <img src="https://www.betway.com/images/betway-sa20-logo.png" class="logo" style="height:16px" alt="SA20">
+      </div>
+      
+      <div class="footer">PORTFOLIO DEMO ONLY | RESPONSIBLE GAMING</div>
+      
+    </div>
+  </div>
+  
+</model-viewer>
+
+<script>
+  // 1. Your 48 numbers from screenshot
+  const numbers = [2,4,3,8,7,9,1,11,14,13,12,6,10,5,16,19,17,22,24,29,27,28,33,18,20,21,25,26,30,31,34,32,39,37,38,36,35,42,40,45,43,48,47,46,44,41,15,23];
+  document.getElementById('ballGrid').innerHTML = numbers.map(n => `<div class="ball">${n}</div>`).join('');
+  
+  // 2. Live ticker data from screenshot
+  const draws = [
+    {name:"SLOVAKIA EKLUB KENO", flag:"🇸🇰", t:17},
+    {name:"FAST KENO 20/80", flag:"🇲🇹", t:17},
+    {name:"UK FAST 15S", flag:"🇬🇧", t:72},
+    {name:"GREECE KENO 20/80", flag:"🇬🇷", t:77}
+  ];
+  
+  function formatTime(s){
+    const h = String(Math.floor(s/3600)).padStart(2,'0');
+    const m = String(Math.floor((s%3600)/60)).padStart(2,'0');
+    const sec = String(s%60).padStart(2,'0');
+    return `${h}:${m}:${sec}`;
+  }
+  
+  function renderTicker(){
+    document.getElementById('tickerList').innerHTML = draws.map(d => `
+      <div class="row">
+        <div>${d.flag} ${d.name}</div>
+        <div class="timer">${formatTime(d.t)}</div>
+      </div>
+    `).join('');
+  }
+  
+  renderTicker();
+  setInterval(() => { 
+    draws.forEach(d => { if(d.t > 0) d.t--; }); 
+    renderTicker(); 
+  }, 1000);
+</script>
+
+</body>
+  </html>
